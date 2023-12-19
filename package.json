@@ -1,0 +1,27 @@
+{
+  "name": "crashcourse",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service s3-deploy",
+    "release": "npm run build && npm run deploy"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.16",
+  
+    "tailwindcss": "^3.3.7",
+    "vue": "^3.3.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^5.0.8"
+  }
+}
