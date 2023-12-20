@@ -9,6 +9,10 @@
         to right,
         transparent,
         lightgrey,
+        lightgrey,
+        lightgrey,
+        lightgrey,
+        lightgrey,
         transparent
       );
     "
@@ -287,6 +291,10 @@
       background-image: linear-gradient(
         to right,
         transparent,
+        lightgrey,
+        lightgrey,
+        lightgrey,
+        lightgrey,
         lightgrey,
         transparent
       );
