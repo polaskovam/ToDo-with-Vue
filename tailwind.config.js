@@ -1,12 +1,12 @@
-const tailwindcss = require('tailwindcss');
+const tailwindcss = require("tailwindcss");
 
 export default {
-  content: [
-    './index.html',
-    './src/**/*.{html,js,vue,ts,jsx,tsx}',
-
-  ],
-  plugins: [
-    tailwindcss,
-  ],
+  content: ["./index.html", "./src/**/*.{html,js,vue,ts,jsx,tsx}"],
+  plugins: [tailwindcss],
+  theme: {
+    screens: {
+      custom: "989px",
+      md: "768px",
+    },
+  },
 };

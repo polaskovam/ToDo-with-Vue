@@ -2,7 +2,19 @@
 
 <template>
   <div
-    class="flex items-center border-t-2 border-b-2 relative group leading-8 mt-8 grow justify-between"
+    style="
+      width: 100%;
+      height: 1px;
+      background-image: linear-gradient(
+        to right,
+        transparent,
+        lightgrey,
+        transparent
+      );
+    "
+  ></div>
+  <div
+    class="flex items-center relative group leading-8 grow justify-between hover:bg-gradient-to-r from-white via-gray-100 to-white"
   >
     <div class="flex items-center pl-2">
       <!-- ThreeDotsIcon -->
@@ -13,7 +25,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         data-slot="icon"
-        class="icon-style opacity-0 group-hover:opacity-100"
+        class="icon-style opacity-0 group-hover:opacity-100 hidden custom:flex"
       >
         <path
           stroke-linecap="round"
@@ -29,7 +41,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         data-slot="icon"
-        class="icon-style opacity-0 group-hover:opacity-100 h-6 w-6"
+        class="icon-style opacity-0 group-hover:opacity-100 h-6 w-6 hidden custom:flex"
       >
         <path
           stroke-linecap="round"
@@ -50,7 +62,7 @@
         viewBox="0 0 24 24"
         fill="currentColor"
         data-slot="icon"
-        class="icon-style ml-2 group-hover:ml-8 opacity-10 mr-1 fill-blue-on-hover"
+        class="icon-style ml-2 group-hover:ml-8 opacity-10 mr-1 fill-blue-on-hover hidden md:flex"
       >
         <path
           fill-rule="evenodd"
@@ -68,7 +80,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           data-slot="icon"
-          class="icon-style mr-1 blue-on-hover"
+          class="icon-style mr-1 blue-on-hover hidden custom:flex"
           data-tooltip-target="user-tooltip"
           data-tooltip-trigger="hover"
         >
@@ -94,7 +106,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           data-slot="icon"
-          class="icon-style mr-1 blue-on-hover"
+          class="icon-style mr-1 blue-on-hover hidden custom:flex"
           data-tooltip-target="calendar-tooltip"
           data-tooltip-trigger="hover"
         >
@@ -120,7 +132,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           data-slot="icon"
-          class="icon-style mr-1 green-on-hover"
+          class="icon-style mr-1 green-on-hover hidden custom:flex"
           data-tooltip-target="play-tooltip"
           data-tooltip-trigger="hover"
         >
@@ -146,7 +158,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           data-slot="icon"
-          class="icon-style mr-1 blue-on-hover"
+          class="icon-style mr-1 blue-on-hover hidden custom:flex"
           data-tooltip-target="pencil-tooltip"
           data-tooltip-trigger="hover"
         >
@@ -172,7 +184,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           data-slot="icon"
-          class="icon-style blue-on-hover"
+          class="icon-style blue-on-hover hidden custom:flex"
           data-tooltip-target="label-tooltip"
           data-tooltip-trigger="hover"
         >
@@ -206,7 +218,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         data-slot="icon"
-        class="icon-style blue-on-hover mr-1 opacity-0 group-hover:opacity-100"
+        class="icon-style blue-on-hover mr-1 opacity-0 group-hover:opacity-100 hidden custom:flex"
         data-tooltip-target="clock-tooltip"
         data-tooltip-trigger="hover"
       >
@@ -232,7 +244,7 @@
         stroke-width="1.5"
         stroke="currentColor"
         data-slot="icon"
-        class="icon-style opacity-0 group-hover:opacity-100"
+        class="icon-style opacity-0 group-hover:opacity-100 hidden custom:flex"
         data-tooltip-target="bin-tooltip"
         data-tooltip-trigger="hover"
       >
@@ -250,8 +262,36 @@
         Smazat
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
+      <!-- ThreeDotsIcon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        data-slot="icon"
+        class="icon-style custom:hidden"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+        />
+      </svg>
     </div>
   </div>
+  <div
+    style="
+      width: 100%;
+      height: 1px;
+      background-image: linear-gradient(
+        to right,
+        transparent,
+        lightgrey,
+        transparent
+      );
+    "
+  ></div>
 </template>
 
 <style scoped>
@@ -277,5 +317,24 @@
 input[type="checkbox"]:checked + label {
   background-color: #333;
   color: #fff;
+}
+
+.gradient-border::before,
+.gradient-border::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px; /* Adjust the thickness of the border as needed */
+}
+
+.gradient-border::before {
+  top: 0;
+  background: linear-gradient(to right, white, rgba(107, 114, 128, 0), white);
+}
+
+.gradient-border::after {
+  bottom: 0;
+  background: linear-gradient(to right, white, rgba(107, 114, 128, 0), white);
 }
 </style>
