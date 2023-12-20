@@ -1,4 +1,23 @@
-<script setup></script>
+<script>
+export default {
+  props: ["userInput", "todoId"],
+  emits: ["delete", "toggleComplete"],
+  data() {
+    return {
+      isCompleted: false,
+    };
+  },
+  methods: {
+    toggleComplete() {
+      this.isCompleted = !this.isCompleted;
+      this.$emit("toggleComplete", {
+        todoId: this.todoId,
+        isCompleted: this.isCompleted,
+      });
+    },
+  },
+};
+</script>
 
 <template>
   <div
@@ -19,6 +38,7 @@
   ></div>
   <div
     class="flex items-center relative group leading-8 grow justify-between hover:bg-gradient-to-r from-white via-gray-100 to-white"
+    :class="{ 'completed-task': isCompleted }"
   >
     <div class="flex items-center pl-2">
       <!-- ThreeDotsIcon -->
@@ -57,8 +77,9 @@
       <input
         type="checkbox"
         class="form-checkbox ml-2 rounded-sm border-gray-400 h-5 w-5"
+        @change="toggleComplete"
       />
-      <span class="ml-2 hover:text-blue-700">Task 1</span>
+      <span class="ml-2 hover:text-blue-700">{{ userInput }}</span>
 
       <!-- ChatIcon -->
       <svg
@@ -85,7 +106,7 @@
           stroke="currentColor"
           data-slot="icon"
           class="icon-style mr-1 blue-on-hover hidden custom:flex"
-          data-tooltip-target="user-tooltip"
+          :data-tooltip-target="'user-tooltip-' + todoId"
           data-tooltip-trigger="hover"
         >
           <path
@@ -95,9 +116,9 @@
           />
         </svg>
         <div
-          id="user-tooltip"
+          :id="'user-tooltip-' + todoId"
           role="tooltip"
-          class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
+          class="absolute z-101 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
         >
           Přidat řešitele
           <div class="tooltip-arrow" data-popper-arrow></div>
@@ -111,7 +132,7 @@
           stroke="currentColor"
           data-slot="icon"
           class="icon-style mr-1 blue-on-hover hidden custom:flex"
-          data-tooltip-target="calendar-tooltip"
+          :data-tooltip-target="'calendar-tooltip-' + todoId"
           data-tooltip-trigger="hover"
         >
           <path
@@ -121,7 +142,7 @@
           />
         </svg>
         <div
-          id="calendar-tooltip"
+          :id="'calendar-tooltip-' + todoId"
           role="tooltip"
           class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
         >
@@ -137,7 +158,7 @@
           stroke="currentColor"
           data-slot="icon"
           class="icon-style mr-1 green-on-hover hidden custom:flex"
-          data-tooltip-target="play-tooltip"
+          :data-tooltip-target="'play-tooltip-' + todoId"
           data-tooltip-trigger="hover"
         >
           <path
@@ -147,7 +168,7 @@
           />
         </svg>
         <div
-          id="play-tooltip"
+          :id="'play-tooltip-' + todoId"
           role="tooltip"
           class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
         >
@@ -163,7 +184,7 @@
           stroke="currentColor"
           data-slot="icon"
           class="icon-style mr-1 blue-on-hover hidden custom:flex"
-          data-tooltip-target="pencil-tooltip"
+          :data-tooltip-target="'pencil-tooltip-' + todoId"
           data-tooltip-trigger="hover"
         >
           <path
@@ -173,7 +194,7 @@
           />
         </svg>
         <div
-          id="pencil-tooltip"
+          :id="'pencil-tooltip-' + todoId"
           role="tooltip"
           class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
         >
@@ -189,7 +210,7 @@
           stroke="currentColor"
           data-slot="icon"
           class="icon-style blue-on-hover hidden custom:flex"
-          data-tooltip-target="label-tooltip"
+          :data-tooltip-target="'label-tooltip-' + todoId"
           data-tooltip-trigger="hover"
         >
           <path
@@ -204,7 +225,7 @@
           />
         </svg>
         <div
-          id="label-tooltip"
+          :id="'label-tooltip-' + todoId"
           role="tooltip"
           class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
         >
@@ -223,7 +244,7 @@
         stroke="currentColor"
         data-slot="icon"
         class="icon-style blue-on-hover mr-1 opacity-0 group-hover:opacity-100 hidden custom:flex"
-        data-tooltip-target="clock-tooltip"
+        :data-tooltip-target="'clock-tooltip-' + todoId"
         data-tooltip-trigger="hover"
       >
         <path
@@ -233,7 +254,7 @@
         />
       </svg>
       <div
-        id="clock-tooltip"
+        :id="'clock-tooltip-' + todoId"
         role="tooltip"
         class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
       >
@@ -241,31 +262,34 @@
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
       <!-- BinIcon -->
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        data-slot="icon"
-        class="icon-style opacity-0 group-hover:opacity-100 hidden custom:flex"
-        data-tooltip-target="bin-tooltip"
-        data-tooltip-trigger="hover"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-        />
-      </svg>
+      <button @click="$emit('delete', todoId)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          data-slot="icon"
+          class="icon-style opacity-0 group-hover:opacity-100 hidden custom:flex"
+          :data-tooltip-target="'bin-tooltip-' + todoId"
+          data-tooltip-trigger="hover"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+          />
+        </svg>
+      </button>
       <div
-        id="bin-tooltip"
+        :id="'play-tooltip-' + todoId"
         role="tooltip"
         class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
       >
         Smazat
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
+
       <!-- ThreeDotsIcon -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -327,22 +351,8 @@ input[type="checkbox"]:checked + label {
   color: #fff;
 }
 
-.gradient-border::before,
-.gradient-border::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px; /* Adjust the thickness of the border as needed */
-}
-
-.gradient-border::before {
-  top: 0;
-  background: linear-gradient(to right, white, rgba(107, 114, 128, 0), white);
-}
-
-.gradient-border::after {
-  bottom: 0;
-  background: linear-gradient(to right, white, rgba(107, 114, 128, 0), white);
+.completed-task {
+  text-decoration: line-through;
+  background-color: #9ca3af;
 }
 </style>
