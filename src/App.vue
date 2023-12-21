@@ -43,8 +43,8 @@ const updateUserInput = ({ todoId, newUserInput }) => {
 
 <template>
   <div class="bg-gray-100 h-screen pt-5">
-    <div class="main-div border-2 p-5 pl-10 pr-10 shadow rounded-md bg-white">
-      <h1 class="text-xl text-blue-600 font-medium mb-4">To-Do List</h1>
+    <div class="p-0 pb-2 pl-10 pr-10 m-0 md:m-8 shadow rounded-md bg-white">
+      <h1 class="text-xl text-blue-600 font-medium mb-4 pt-3">To-Do List</h1>
       <div class="mb-3 ml-[4%]">
         <div class="mb-3">
           <label for="myInput" class="mr-2">New task</label>
@@ -59,7 +59,7 @@ const updateUserInput = ({ todoId, newUserInput }) => {
             @delete="deleteToDo"
           />
           <button
-            class="ml-5 bg-blue-600 text-white rounded-md p-1 pr-3 pl-3"
+            class="ml-5 bg-blue-600 text-white rounded-md p-1 pr-3 pl-3 md:ml-5 sm:ml-5 xs:ml-32 xs:mt-3"
             @click="addToDo"
           >
             Submit
@@ -82,9 +82,5 @@ const updateUserInput = ({ todoId, newUserInput }) => {
 <style scoped>
 h1 {
   margin-left: 1%;
-}
-.main-div {
-  margin: 0px 200px 0 200px;
-  height: 300px;
 }
 </style>
