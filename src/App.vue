@@ -1,6 +1,16 @@
 <script setup>
 import ToDo from "./components/ToDo.vue";
 import { ref } from "vue";
+import { onMounted, onUpdated } from "vue";
+import { initFlowbite } from "flowbite";
+
+onMounted(() => {
+  initFlowbite();
+});
+
+onUpdated(() => {
+  initFlowbite();
+});
 
 const userInput = ref("");
 const todos = ref([]);
@@ -19,8 +29,14 @@ const deleteToDo = (todoId) => {
 const updateCompletionStatus = ({ todoId, isCompleted }) => {
   const index = todos.value.findIndex((todo) => todo.id === todoId);
   if (index !== -1) {
-    // Update the specific todo item's completion status
     todos.value[index].isCompleted = isCompleted;
+  }
+};
+
+const updateUserInput = ({ todoId, newUserInput }) => {
+  const index = todos.value.findIndex((todo) => todo.id === todoId);
+  if (index !== -1) {
+    todos.value[index].userInput = newUserInput;
   }
 };
 </script>
@@ -55,6 +71,7 @@ const updateCompletionStatus = ({ todoId, isCompleted }) => {
             :todoId="todo.id"
             @delete="deleteToDo"
             @toggleComplete="updateCompletionStatus"
+            @updateUserInput="updateUserInput"
           />
         </div>
       </div>

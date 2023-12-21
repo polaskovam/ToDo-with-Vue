@@ -1,10 +1,12 @@
 <script>
 export default {
   props: ["userInput", "todoId"],
-  emits: ["delete", "toggleComplete"],
+  emits: ["delete", "toggleComplete", "updateUserInput"],
   data() {
     return {
       isCompleted: false,
+      isEditing: false,
+      editableUserInput: this.userInput,
     };
   },
   methods: {
@@ -13,6 +15,17 @@ export default {
       this.$emit("toggleComplete", {
         todoId: this.todoId,
         isCompleted: this.isCompleted,
+      });
+    },
+    toggleEdit() {
+      this.isEditing = !this.isEditing;
+      this.editableUserInput = this.userInput; // Reset editable input to current value
+    },
+    saveEdit() {
+      this.isEditing = false;
+      this.$emit("updateUserInput", {
+        todoId: this.todoId,
+        newUserInput: this.editableUserInput,
       });
     },
   },
@@ -73,13 +86,27 @@ export default {
           d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
         />
       </svg>
-
+      <!-- CheckBox -->
       <input
         type="checkbox"
         class="form-checkbox ml-2 rounded-sm border-gray-400 h-5 w-5"
         @change="toggleComplete"
       />
-      <span class="ml-2 hover:text-blue-700">{{ userInput }}</span>
+      <!-- InputField -->
+      <div v-if="isEditing">
+        <input
+          type="text"
+          v-model="editableUserInput"
+          @keyup.enter="saveEdit"
+          @blur="saveEdit"
+          class="ml-2 rounded-md max-h-8"
+        />
+      </div>
+      <div v-else>
+        <span class="ml-2 hover:text-blue-700" @dblclick="toggleEdit">{{
+          userInput
+        }}</span>
+      </div>
 
       <!-- ChatIcon -->
       <svg
@@ -176,31 +203,34 @@ export default {
           <div class="tooltip-arrow" data-popper-arrow></div>
         </div>
         <!-- PencilIcon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          data-slot="icon"
-          class="icon-style mr-1 blue-on-hover hidden custom:flex"
-          :data-tooltip-target="'pencil-tooltip-' + todoId"
-          data-tooltip-trigger="hover"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-          />
-        </svg>
-        <div
-          :id="'pencil-tooltip-' + todoId"
-          role="tooltip"
-          class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
-        >
-          Upravit
-          <div class="tooltip-arrow" data-popper-arrow></div>
-        </div>
+        <button @click="toggleEdit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            data-slot="icon"
+            class="icon-style mr-1 blue-on-hover hidden custom:flex"
+            :data-tooltip-target="'pencil-tooltip-' + todoId"
+            data-tooltip-trigger="hover"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+            />
+          </svg>
+          <div
+            :id="'pencil-tooltip-' + todoId"
+            role="tooltip"
+            class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-light text-white transition-opacity duration-1000 bg-gray-800 rounded shadow-sm opacity-0 tooltip"
+          >
+            Upravit
+            <div class="tooltip-arrow" data-popper-arrow></div>
+          </div>
+        </button>
+
         <!-- LabelIcon -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +275,8 @@ export default {
         data-slot="icon"
         class="icon-style blue-on-hover mr-1 opacity-0 group-hover:opacity-100 hidden custom:flex"
         :data-tooltip-target="'clock-tooltip-' + todoId"
-        data-tooltip-trigger="hover"
+        :data-tooltip-trigger="'hover'"
+        :v-tooltip="{ content: 'Your tooltip content' }"
       >
         <path
           stroke-linecap="round"
@@ -261,6 +292,7 @@ export default {
         Reporty
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
+
       <!-- BinIcon -->
       <button @click="$emit('delete', todoId)">
         <svg
